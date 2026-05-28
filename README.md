@@ -1,36 +1,29 @@
-# GDN
+# PSGAN
 
-Code implementation for : [Graph Neural Network-Based Anomaly Detection in Multivariate Time Series(AAAI'21)](https://arxiv.org/pdf/2106.06947.pdf)
-
-
-# Installation
+## Installation
 ### Requirements
 * Python >= 3.6
 * cuda == 10.2
 * [Pytorch==1.5.1](https://pytorch.org/)
 * [PyG: torch-geometric==1.5.0](https://pytorch-geometric.readthedocs.io/en/latest/notes/installation.html)
 
-### Install packages
+### Install
 ```
-    # run after installing correct Pytorch package
-    bash install.sh
+git clone https://github.com/YeBaitt/PSGAN.git
+cd ./PSGAN
+conda create -n psgan python=3.7
+conda activate psgan
+conda install pytorch==1.5.1 torchvision==0.6.1 cudatoolkit=10.2 -c pytorch
+conda install pytorch-geometric -c rusty1s t-c conda-forge
+pip install performer-pytorch
+pip install colorama
 ```
-
-### Quick Start
-Run to check if the environment is ready
-```
-    bash run.sh cpu msl
-    # or with gpu
-    bash run.sh <gpu_id> msl    # e.g. bash run.sh 1 msl
-```
-
 
 # Usage
-We use part of msl dataset(refer to [telemanom](https://github.com/khundman/telemanom)) as demo example. 
 
 ## Data Preparation
 ```
-# put your dataset under data/ directory with the same structure shown in the data/msl/
+put your dataset under data/ directory with the same structure shown in the data/msl/
 
 data
  |-msl
@@ -49,31 +42,32 @@ data
 * The first column in .csv will be regarded as index column. 
 * The column sequence in .csv don't need to match the sequence in list.txt, we will rearrange the data columns according to the sequence in list.txt.
 * test.csv should have a column named "attack" which contains ground truth label(0/1) of being attacked or not(0: normal, 1: attacked)
-
-## Run
+## Quick Start
 ```
-    # using gpu
-    bash run.sh <gpu_id> <dataset>
-
-    # or using cpu
-    bash run.sh cpu <dataset>
+bash run.sh <gpu_id> swat_conc
 ```
-You can change running parameters in the run.sh.
 
-# Others
-SWaT and WADI datasets can be requested from [iTrust](https://itrust.sutd.edu.sg/)
-
-
-# Citation
-If you find this repo or our work useful for your research, please consider citing the paper
+## Train
 ```
-@inproceedings{deng2021graph,
-  title={Graph neural network-based anomaly detection in multivariate time series},
-  author={Deng, Ailin and Hooi, Bryan},
-  booktitle={Proceedings of the AAAI Conference on Artificial Intelligence},
-  volume={35},
-  number={5},
-  pages={4027--4035},
-  year={2021}
-}
+python main.py -comment "your comment"\
+ -dataset swat_conc\
+ -save_path_pattern  "swat_conc"\
+ -slide_stride 1\
+ -slide_win 5\
+ -batch 256\ 
+ -epoch 50\ 
+ -random_seed 5\ 
+ -decay 0\ 
+ -dim 128\ 
+ -out_layer_num 10\ 
+ -out_layer_inter_dim 64\ 
+ -val_ratio 0.2\ 
+ -report best\ 
+ -topk 30\ 
+ -slide_avg_win 3\ 
+ -device cuda\ 
+ -fusion_layer_num 10\
+
 ```
+
+

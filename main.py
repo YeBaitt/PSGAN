@@ -134,20 +134,21 @@ class Main():
                 print(json.dumps(env_config, indent=4), file=f, end="\n\n")
                 print(f"INITIATING TRAIN", file=f)
         start = time.time()
-        train(self.model, model_save_path, log_save_path,
-            config = train_config,
-            train_dataloader=self.train_dataloader,
-            val_dataloader=self.val_dataloader, 
-            feature_map=self.feature_map,
-            test_dataloader=self.test_dataloader,
-            test_dataset=self.test_dataset,
-            train_dataset=self.train_dataset,
-            dataset_name=self.env_config['dataset'])
-        end = time.time()
-        train_time = (end-start)/60
-        print(Fore.GREEN + f"TRAINING CONSUMED {train_time:.2f} MINUTES")
-        with open(log_save_path, 'a') as f:
-            print(f"TRAINING CONSUMED {train_time:.2f} MINUTES", file=f)
+        if self.env_config['mode'] == 'train':
+            train(self.model, model_save_path, log_save_path,
+                config = train_config,
+                train_dataloader=self.train_dataloader,
+                val_dataloader=self.val_dataloader, 
+                feature_map=self.feature_map,
+                test_dataloader=self.test_dataloader,
+                test_dataset=self.test_dataset,
+                train_dataset=self.train_dataset,
+                dataset_name=self.env_config['dataset'])
+            end = time.time()
+            train_time = (end-start)/60
+            print(Fore.GREEN + f"TRAINING CONSUMED {train_time:.2f} MINUTES")
+            with open(log_save_path, 'a') as f:
+                print(f"TRAINING CONSUMED {train_time:.2f} MINUTES", file=f)
             
 
         # test
@@ -338,6 +339,7 @@ if __name__ == "__main__":
     parser.add_argument('-perf_dep', help='Depth of Perfomer', type = int, default=8)
     parser.add_argument('-lr', help='learning rate', type = float, default=0.001)
     parser.add_argument('-loader_mode', help='loader mode', type = int, default=0)
+    parser.add_argument('-mode', help='train or test', type = str, default='train')
 
     args = parser.parse_args()
 
@@ -369,7 +371,7 @@ if __name__ == "__main__":
         'fusion_layer_num': args.fusion_layer_num,
         'perf_dep':args.perf_dep,
         'lr':args.lr,
-        'loader_mode':args.loader_mode,
+        'loader_mode':args.loader_mode
     }
 
     env_config={
@@ -377,7 +379,8 @@ if __name__ == "__main__":
         'dataset': args.dataset,
         'report': args.report,
         'device': args.device,
-        'load_model_path': args.load_model_path
+        'load_model_path': args.load_model_path,
+        'mode': args.mode
     }
 
     main = Main(train_config, env_config, debug=False)
