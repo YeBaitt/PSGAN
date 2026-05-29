@@ -37,14 +37,14 @@ data
 ```
 
 ### Notices:
-* You can request the original SWaT and WADI dataset from [iTrust](https://itrust.sutd.edu.sg/) or get my preprocessed datasets with FFT from https://pan.baidu.com/s/1ssGF9FOlVfWWWjLTts4-9g?pwd=1037 
+* You can request the original SWaT and WADI dataset from [iTrust](https://itrust.sutd.edu.sg/) or get my preprocessed datasets with FFT from [datasets](https://pan.baidu.com/s/1ssGF9FOlVfWWWjLTts4-9g?pwd=1037) 
 * The first column in .csv will be regarded as index column. 
 * The column sequence in .csv don't need to match the sequence in list.txt, we will rearrange the data columns according to the sequence in list.txt.
 * test.csv should have a column named "attack" which contains ground truth label(0/1) of being attacked or not(0: normal, 1: attacked)
 
 
 ## Pretrained Checkpoints
-* The pretrained checkpionts can be found in: https://pan.baidu.com/s/169iMlP_xnsmk7Bq90AGOlA?pwd=1037
+* The pretrained checkpionts can be found in: [ckpt](https://pan.baidu.com/s/169iMlP_xnsmk7Bq90AGOlA?pwd=1037)
 ## Quick Start
 ```
 bash run.sh [gpu_id] [dataset_name]
@@ -53,8 +53,8 @@ bash run.sh [gpu_id] [dataset_name]
 ## Train
 ```
 python main.py -comment "your comment"\
- -dataset swat_conc\
- -save_path_pattern  "swat_conc"\
+ -dataset [dataset_name]\
+ -save_path_pattern  "[saved_path]"\
  -slide_stride 1\
  -slide_win 5\
  -batch 256\ 
@@ -78,8 +78,8 @@ python main.py -comment "your comment"\
 
 ```
 python main.py -comment "your comment"\
- -dataset swat_conc\
- -save_path_pattern  "swat_conc"\
+ -dataset [dataset_name]\
+ -save_path_pattern  "[saved_path]"\
  -slide_stride 1\
  -slide_win 5\
  -batch 256\ 
